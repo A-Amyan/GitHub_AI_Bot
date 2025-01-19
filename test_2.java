@@ -51,9 +51,9 @@ public class SecurityMisusesExample {
         secureRandom.setSeed(12345L); // Insecure: Constant seed
 
         // 16. Using broken hash function (SHA1)
-        java.security.MessageDigest sha1Digest = java.security.MessageDigest.getInstance("SHA1"); // Insecure: SHA1 is broken
-        sha1Digest.update("example".getBytes());
-        byte[] hash = sha1Digest.digest();
+        java.security.MessageDigest sha256Digest = java.security.MessageDigest.getInstance("SHA-256");
+        sha256Digest.update("example".getBytes());
+        byte[] hash = sha256Digest.digest();
 
         System.out.println("Insecure operations executed.");
     }
