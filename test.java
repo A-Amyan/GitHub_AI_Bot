@@ -1,77 +1,60 @@
-// Copyright Amazon.com Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
-package com.amazon.corretto.crypto.provider.test;
-
-import static com.amazon.corretto.crypto.provider.test.TestUtil.getEntriesFromFile;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
-import java.util.function.Function;
-import java.util.stream.Stream;
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.ResourceAccessMode;
-import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
+import java.security.SecureRandom;
+import java.util.Random;
+import java.net.URL;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.X509TrustManager;
+import java.security.KeyStore;
 
-@ExtendWith(TestResultLogger.class)
-@Execution(ExecutionMode.CONCURRENT)
-@ResourceLock(value = TestUtil.RESOURCE_GLOBAL, mode = ResourceAccessMode.READ)
-public class AesCbcNistTest {
+public class SecurityMisusesExample {
+    public static void main(String[] args) throws Exception {
+        // 1. Hardcoded cryptographic key in SecretKeySpec
+        String hardcodedKey = "1234567812345678"; // Insecure: Hardcoded key
+        SecretKeySpec keySpec = new SecretKeySpec(hardcodedKey.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding"); // 11. Using ECB mode (insecure)
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 
-  @ParameterizedTest(name = "{0}")
-  @MethodSource("allCbcKatTests")
-  public void cbcKatTests(final RspTestEntry entry) throws Exception {
-    singleTest(entry);
-  }
+        // 2. Hardcoded password in PBEKeySpec
+        char[] hardcodedPassword = "hardcodedPassword".toCharArray(); // Insecure: Hardcoded password
+        byte[] salt = "12345678".getBytes(); // 10. Constant salt (insecure)
+        int iterationCount = 500; // 13. Iteration count less than 1000 (insecure)
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(hardcodedPassword, salt, iterationCount);
 
-  @ParameterizedTest(name = "{0}")
-  @MethodSource("allCbcMmtTests")
-  public void cbcMmtTests(final RspTestEntry entry) throws Exception {
-    singleTest(entry);
-  }
+        // 3. Hardcoded KeyStore password
+        String keystorePassword = "hardcodedKeystorePassword"; // Insecure: Hardcoded password
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        keyStore.load(null, keystorePassword.toCharArray());
 
-  // These tests are coming from the following URL:
-  // https://csrc.nist.gov/Projects/cryptographic-algorithm-validation-program/Block-Ciphers
-  private static Stream<RspTestEntry> allCbcKatTests() throws Exception {
-    return Stream.of(
-            getEntriesFromFile("CBCGFSbox128.rsp.gz"),
-            getEntriesFromFile("CBCGFSbox192.rsp.gz"),
-            getEntriesFromFile("CBCGFSbox256.rsp.gz"),
-            getEntriesFromFile("CBCKeySbox128.rsp.gz"),
-            getEntriesFromFile("CBCKeySbox192.rsp.gz"),
-            getEntriesFromFile("CBCKeySbox256.rsp.gz"),
-            getEntriesFromFile("CBCVarKey128.rsp.gz"),
-            getEntriesFromFile("CBCVarKey192.rsp.gz"),
-            getEntriesFromFile("CBCVarKey256.rsp.gz"),
-            getEntriesFromFile("CBCVarTxt128.rsp.gz"),
-            getEntriesFromFile("CBCVarTxt192.rsp.gz"),
-            getEntriesFromFile("CBCVarTxt256.rsp.gz"))
-        .flatMap(Function.identity());
-  }
+        // 4. HostnameVerifier always returning true
+        HostnameVerifier hostnameVerifier = (hostname, session) -> true; // Insecure: Accepts all hostnames
+        URL url = new URL("http://example.com"); // 7. Using HTTP instead of HTTPS
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setHostnameVerifier(hostnameVerifier);
 
-  private static Stream<RspTestEntry> allCbcMmtTests() throws Exception {
-    return Stream.of(
-            getEntriesFromFile("CBCMMT128.rsp.gz"),
-            getEntriesFromFile("CBCMMT192.rsp.gz"),
-            getEntriesFromFile("CBCMMT256.rsp.gz"))
-        .flatMap(Function.identity());
-  }
+        // 5. X509TrustManager with empty certificate validation
+        X509TrustManager trustManager = new X509TrustManager() {
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) { }
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+        };
 
-  private static void singleTest(final RspTestEntry entry) throws Exception {
-    final SecretKey key = new SecretKeySpec(entry.getInstanceFromHex("KEY"), "AES");
-    final IvParameterSpec iv = new IvParameterSpec(entry.getInstanceFromHex("IV"));
-    final byte[] plainText = entry.getInstanceFromHex("PLAINTEXT");
-    final byte[] ciphertexts = entry.getInstanceFromHex("CIPHERTEXT");
-    final Cipher cipher = AesCbcTest.accpAesCbcCipher(false);
-    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-    assertArrayEquals(ciphertexts, cipher.doFinal(plainText));
-    cipher.init(Cipher.DECRYPT_MODE, key, iv);
-    assertArrayEquals(plainText, cipher.doFinal(ciphertexts));
-  }
+        // 8. Using java.util.Random instead of SecureRandom
+        Random insecureRandom = new Random();
+        int randomValue = insecureRandom.nextInt();
+
+        // 9. Using constant seed in SecureRandom
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.setSeed(12345L); // Insecure: Constant seed
+
+        // 16. Using broken hash function (SHA1)
+        java.security.MessageDigest sha1Digest = java.security.MessageDigest.getInstance("SHA1"); // Insecure: SHA1 is broken
+        sha1Digest.update("example".getBytes());
+        byte[] hash = sha1Digest.digest();
+
+        System.out.println("Insecure operations executed.");
+    }
 }
