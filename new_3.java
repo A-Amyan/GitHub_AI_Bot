@@ -1,5 +1,3 @@
-As the user has accepted the corrected code but hasn't provided any specific changes to be made, the code remains the same.
-
 ```java
 package org.cryptoapi.bench.brokenhash;
 
@@ -9,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 public class BrokenHashABICase1 {
     public static void main (String [] args) throws NoSuchAlgorithmException {
         String str = "abcdef";
-        String crypto = "SHA1";
+        String crypto = "SHA-256";
         go(str,crypto);
     }
     public static void go (String str, String crypto) throws NoSuchAlgorithmException {
