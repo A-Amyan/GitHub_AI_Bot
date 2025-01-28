@@ -1,5 +1,7 @@
-package org.cryptoapi.bench.brokenhash;
+As the user has accepted the corrected code but hasn't provided any specific changes to be made, the code remains the same.
 
+```java
+package org.cryptoapi.bench.brokenhash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,3 +18,4 @@ public class BrokenHashABICase1 {
         System.out.println(md.digest());
     }
 }
+```
