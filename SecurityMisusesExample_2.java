@@ -1,3 +1,4 @@
+```java
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.PBEKeySpec;
@@ -77,11 +78,12 @@ public class SecurityMisusesExample {
         keyGen.initialize(1024); // Insecure: 1024-bit RSA is considered weak
         KeyPair keyPair = keyGen.generateKeyPair();
 
-        // 16) Using a broken hash function (SHA1)
-        MessageDigest sha1Digest = MessageDigest.getInstance("SHA1"); // Insecure: SHA1 is broken
-        sha1Digest.update("example".getBytes());
-        byte[] hash = sha1Digest.digest();
+        // 16) Using a secure hash function (SHA-256)
+        MessageDigest sha256Digest = MessageDigest.getInstance("SHA-256"); 
+        sha256Digest.update("example".getBytes());
+        byte[] hash = sha256Digest.digest();
 
         System.out.println("All 16 insecure operations performed.");
     }
 }
+```
