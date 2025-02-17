@@ -8,8 +8,8 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
   - Uses environment variables (`GITHUB_APP_ID`, `GITHUB_PRIVATE_KEY`, `OPENAI_API_KEY`) for secure configuration.
   - Authenticates as a GitHub App using PyGithub and a custom `Auth.AppAuth`.
 - **Flask-Based Webhook Server:**
-  - Listens for GitHub webhook events on `/webhook` and a health check endpoint `/ping`.
-  - Supports the following GitHub events:
+  - Listen for GitHub webhook events on `/webhook` and a health check endpoint `/ping`.
+  - Support the following GitHub events:
     - **Push Events:** Automatically triggers actions on branch pushes.
     - **Pull Request Events:** Analyzes code changes in PRs.
     - **Issue Comment Events:** Responds to chat commands and admin instructions.
@@ -17,12 +17,12 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
   - **Automatic Pull Request Creation:** When a push occurs on a non-default branch, the bot automatically creates a pull request.
   - **Multi-File AI-Generated PR Description:**
     - Collect all changed Java files from the push.
-    - Generates a short, security-focused PR description that summarizes all impacted Java files using OpenAI GPT‑4.
+    - Generate a short, security-focused PR description that summarizes all impacted Java files using OpenAI GPT‑4.
 - **Pull Request Event Handling:**
   - **Per-File Security Analysis:**
-    - Iterates through each changed Java file in the pull request.
-    - Retrieves file contents and splits code into logical sections (using structural splitting by class or method definitions).
-    - Analyzes each section for potential vulnerabilities, misuses of Java Cryptography Architecture (JCA) APIs, and security weaknesses.
+    - Iterate through each changed Java file in the pull request.
+    - Retrieve file contents and splits code into logical sections (using structural splitting by class or method definitions).
+    - Analyze each section for potential vulnerabilities, misuse of Java Cryptography Architecture (JCA) APIs, and security weaknesses.
   - **Aggregated Reporting:**
      - Generate a JSON-formatted report for each file.
      - Post individual comments on the pull request with the security analysis for each impacted Java file.
@@ -39,17 +39,17 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
      - If topics fall outside Java security, the bot responds by indicating that only security-related discussion is supported.
 - **AI-Powered Analysis & Summarization:**
   - **GPT‑4 Integration:**
-    - Generates concise PR descriptions based on Java file snippets.
-    - Performs in-depth security analysis on code sections, identifying vulnerabilities, misuses, and suggesting secure alternatives.
-    - Merges findings from different sections to avoid duplication
+    - Generate concise PR descriptions based on Java file snippets.
+    - Perform in-depth security analysis on code sections, identifying vulnerabilities, and misuses, and suggesting secure alternatives.
+    - Merge findings from different sections to avoid duplication
   - **Custom Prompts:**
     - System and user prompts are tailored to focus on security best practices, cryptography, and vulnerability remediation.
 - **Code Merging & Updates:**
-  - Supports updating code based on admin correction instructions.
-  - Fetches the original code from GitHub, applies minimal changes via GPT‑4, and updates the repository file with a new commit.
+  - Support updating code based on admin correction instructions.
+  - Fetche the original code from GitHub, apply minimal changes via GPT‑4 and update the repository file with a new commit.
 - **Robust Error Handling & Logging:**
-  - Logs errors (set to DEBUG level for troubleshooting) for operations such as file fetching, GitHub API calls, and AI interactions.
-  - Ensures graceful handling of missing fields or authentication issues.
+  - Log errors (set to DEBUG level for troubleshooting) for operations such as file fetching, GitHub API calls, and AI interactions.
+  - Ensure graceful handling of missing fields or authentication issues.
 
 ## How to Install the GitHub App
 
