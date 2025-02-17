@@ -5,10 +5,10 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
 ## Features
 
 - **GitHub App Integration & Authentication:**
-  - Uses environment variables (GITHUB_APP_ID, GITHUB_PRIVATE_KEY, OPENAI_API_KEY) for secure configuration.
-  - Authenticates as a GitHub App using PyGithub and a custom Auth.AppAuth.
+  - Uses environment variables (`GITHUB_APP_ID`, `GITHUB_PRIVATE_KEY`, `OPENAI_API_KEY`) for secure configuration.
+  - Authenticates as a GitHub App using PyGithub and a custom `Auth.AppAuth`.
 - **Flask-Based Webhook Server:**
-  - Listens for GitHub webhook events on /webhook and a health check endpoint /ping.
+  - Listens for GitHub webhook events on `/webhook` and a health check endpoint `/ping`.
   - Supports the following GitHub events:
     - **Push Events:** Automatically triggers actions on branch pushes.
     - **Pull Request Events:** Analyzes code changes in PRs.
@@ -30,10 +30,10 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
   - **In-Memory Conversation Context:**
      - Maintains conversation history per repository and issue number to ensure coherent discussions.
   - **Admin Commands (Restricted to Repository Owner):**
-    - @AIBot analyze repo: Automatically scans the entire repository for Java files, analyzes each for security vulnerabilities, and opens issues with the findings.
-    - @AIBot analyze file: Analyzes a specific file (extracted from the issue or PR body) for security vulnerabilities.
-    - @AIBot update code / @AIBot update: Uses AI to generate updated code based on user instructions.
-    - @AIBot merge code: Merges AI-proposed corrections into the repository.
+    - `@AIBot analyze repo`: Automatically scans the entire repository for Java files, analyzes each for security vulnerabilities, and opens issues with the findings.
+    - `@AIBot analyze file`: Analyzes a specific file (extracted from the issue or PR body) for security vulnerabilities.
+    - `@AIBot update code` / `@AIBot update`: Uses AI to generate updated code based on user instructions.
+    - `@AIBot merge code`: Merges AI-proposed corrections into the repository.
   - **Strict Security-Only Discussion:**
      - The bot’s system instructions enforce that all conversations remain focused on security analysis and vulnerability remediation.
      - If topics fall outside Java security, the bot responds by indicating that only security-related discussion is supported.
