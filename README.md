@@ -54,33 +54,22 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
 ## How to Install the GitHub App
 
 Follow these steps to install the GitHub AI Bot on your repositories:
-
-  - Step 1: Go to the Installation URL
-
-    Navigate to the installation page for the GitHub App:
-  
+  - **Step 1:** Go to the Installation URL
+    - Navigate to the installation page for the GitHub App:
     [https://github.com/apps/GitHub_AI_Bot](https://github.com/apps/GitHub_AI_Bot)
-
-  - Step 2: Install the App
-
-    On the installation page, click the **Install** (or **Configure**) button. You will be prompted to choose whether to install the app on:
-
-    - All repositories:  
-      The app will have access to every repository in your account or organization.
-  
-    - Selected repositories:  
-      You can select the specific repositories you want the app to have access to.
-
-  - Step 3: Grant Permissions
-
+  - **Step 2:** Install the App
+    - On the installation page, click the **Install** (or **Configure**) button. You will be prompted to choose whether to install the app on:
+      - **All repositories:**
+        The app will have access to every repository in your account or organization.
+      - **Selected repositories:**
+        You can select the specific repositories you want the app to have access to.
+  - **Step 3:** Grant Permissions
     After selecting the repositories, you will see a list of permissions that the app requires (for example, read/write access to issues, pull requests, and repository contents). Review and grant the necessary permissions.
-
     Once you confirm, the app will be installed and will start receiving webhook events from the repositories it has access to.
 
 ## What Happens After Installation?
 
 After installation, the GitHub AI Bot will begin processing webhook events from your repositories. It will:
-
 - Analyze code in pull requests and issues.
 - Automatically generate pull request descriptions.
 - Execute admin commands (when issued by the repository owner) such as code updates, merges, and analysis.
