@@ -1,14 +1,14 @@
-# GitHub_AI_Bot
+# GitHub AI Code Analysis Bot
 
-This repository contains a GitHub App written in Python using Flask. The bot listens to GitHub webhook events (push, pull request, and issue comments) and uses OpenAI's GPT-4 to analyze Java code for potential security misuses. It also supports admin commands to update or merge code based on AI analysis.
+This repository contains a GitHub App written in Python using Flask. The bot listens to GitHub webhook events (push, pull request, and issue comments) and uses OpenAI's o3-mini to analyze Java code for potential security misuses. It also supports admin commands to update or merge code based on AI analysis.
 
 ## Features
 
 - **GitHub App Integration & Authentication:**
-  - Uses environment variables (`GITHUB_APP_ID`, `GITHUB_PRIVATE_KEY`, `OPENAI_API_KEY`) for secure configuration.
+  - Uses environment variables (`APP_ID`, `PRIVATE_KEY`, `OPENAI_API_KEY`, `BOT_ADMIN`, `BOT_FALLBACK_PAT`) for secure configuration.
   - Authenticates as a GitHub App using PyGithub and a custom `Auth.AppAuth`.
 - **Flask-Based Webhook Server:**
-  - Listen for GitHub webhook events on `/webhook` and a health check endpoint `/ping`.
+  - Listen for GitHub webhook events on `https://ai-guided-resolution-of-security-issues.onrender.com/webhook` and a health check endpoint `/ping`.
   - Support the following GitHub events:
     - **Push Events:** Automatically triggers actions on branch pushes.
     - **Pull Request Events:** Analyzes code changes in PRs.
@@ -17,7 +17,7 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
   - **Automatic Pull Request Creation:** When a push occurs on a non-default branch, the bot automatically creates a pull request.
   - **Multi-File AI-Generated PR Description:**
     - Collect all changed Java files from the push.
-    - Generate a short, security-focused PR description that summarizes all impacted Java files using OpenAI GPT‑4.
+    - Generate a short, security-focused PR description that summarizes all impacted Java files using OpenAI o3-mini.
 - **Pull Request Event Handling:**
   - **Per-File Security Analysis:**
     - Iterate through each changed Java file in the pull request.
@@ -28,17 +28,19 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
      - Post individual comments on the pull request with the security analysis for each impacted Java file.
 - **Issue Comment Command Handling:**
   - **In-Memory Conversation Context:**
-     - Maintains conversation history per repository and issue number to ensure coherent discussions.
+     - Maintains conversation history per repository and issue number to ensure coherent discussions (user's message should start with `@AI_Bot`).
   - **Admin Commands (Restricted to Repository Owner):**
-    - `@AIBot analyze repo`: Automatically scans the entire repository for Java files, analyzes each for security vulnerabilities, and opens issues with the findings.
-    - `@AIBot analyze file`: Analyzes a specific file (extracted from the issue or PR body) for security vulnerabilities.
-    - `@AIBot update code` / `@AIBot update`: Uses AI to generate updated code based on user instructions.
-    - `@AIBot merge code`: Merges AI-proposed corrections into the repository.
+    - `@AI_Bot analyze repo`: Automatically scans the entire repository for Java files, analyzes each for security vulnerabilities, and opens issues with the findings.
+    - `@AI_Bot analyze file`: Analyzes a specific file (extracted from the issue or PR body) for security vulnerabilities.
+    - `@AI_Bot update code`: Uses AI to generate updated code based on user instructions.
+    - `@AI_Bot update`: Fetches and re‐posts the most relevant code snippet for the current issue or pull request.
+    - `@AI_Bot merge code`: Merges AI-proposed corrections into the repository.
+    - `@AI_Bot trace <method_name>`: search for the method in the repository and analyze it.
   - **Strict Security-Only Discussion:**
      - The bot’s system instructions enforce that all conversations remain focused on security analysis and vulnerability remediation.
      - If topics fall outside Java security, the bot responds by indicating that only security-related discussion is supported.
 - **AI-Powered Analysis & Summarization:**
-  - **GPT‑4 Integration:**
+  - **o3-mini Integration:**
     - Generate concise PR descriptions based on Java file snippets.
     - Perform in-depth security analysis on code sections, identifying vulnerabilities, and misuses, and suggesting secure alternatives.
     - Merge findings from different sections to avoid duplication
@@ -46,7 +48,7 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
     - System and user prompts are tailored to focus on security best practices, cryptography, and vulnerability remediation.
 - **Code Merging & Updates:**
   - Support updating code based on admin correction instructions.
-  - Fetche the original code from GitHub, apply minimal changes via GPT‑4 and update the repository file with a new commit.
+  - Fetch the original code from GitHub, apply minimal changes via o3-mini, and update the repository file with a new commit.
 - **Robust Error Handling & Logging:**
   - Log errors (set to DEBUG level for troubleshooting) for operations such as file fetching, GitHub API calls, and AI interactions.
   - Ensure graceful handling of missing fields or authentication issues.
