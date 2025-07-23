@@ -1,0 +1,19 @@
+1. repo includes files (basic-, advanced misuses, large file size, and trace dependencies).
+
+2. How to install the app on GitHub repositories.
+
+3. A file contains a misuse in the repo, then push it again to handle the new one
+   push one file (test the PR, test handel the file before merging)
+
+4. Choose a file from the repo to analyze, then discuss the misuse with the bot.
+
+5. Trace dependencies (folder with 2 files)
+   analyze a file -> result undefiend -> trace the relatave method
+
+6. Analyze the complete repo (will analyze the rest of the files that were not analyzed before)
+
+
+Push new file to the repo.
+The Bot will automatically create the PR includes title and the describtion, then analyzes the pushed Java file before merging.
+
+ 
