@@ -5,7 +5,7 @@ public class CryptoExample {
 
     public void initEncryption() throws Exception {
         // The key bytes are computed by a method call, but computeKey() is not implemented in this script.
-        byte[] keyBytes = computeKey();  
+        byte[] keyBytes = InsecureKeyUtil.computeKey("mypwd");  
         
         // Direct instantiation of SecretKeySpec using computed key bytes.
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
