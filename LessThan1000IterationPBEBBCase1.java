@@ -1,4 +1,4 @@
-package org.cryptoapi.bench.pbeiteration;
+package org.cryptoapi.bench.pbeitoration;
 
 import javax.crypto.spec.PBEParameterSpec;
 import java.security.SecureRandom;
@@ -13,7 +13,7 @@ public class LessThan1000IterationPBEBBCase1 {
         PBEParameterSpec pbeParamSpec = null;
         byte[] salt = new byte[32];
         random.nextBytes(salt);
-        int count = 20;
+        int count = 20000;
         pbeParamSpec = new PBEParameterSpec(salt, count);
     }
 }
