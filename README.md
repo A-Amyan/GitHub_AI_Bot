@@ -58,7 +58,7 @@ This repository contains a GitHub App written in Python using Flask. The bot lis
 Follow these steps to install the GitHub AI Bot on your repositories:
   - **Step 1:** Go to the Installation URL
     - Navigate to the installation page for the GitHub App:
-    [[https://github.com/apps/GitHub_AI_Bot](https://github.com/apps/ai-powered-bot)](https://github.com/apps/GitHub_AI_Bot)
+    [https://github.com/apps/GitHub_AI_Bot]
   - **Step 2:** Install the App
     - On the installation page, click the **Install** (or **Configure**) button. You will be prompted to choose whether to install the app on:
       - **All repositories:**
