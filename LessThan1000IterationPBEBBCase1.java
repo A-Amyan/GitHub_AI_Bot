@@ -1,3 +1,4 @@
+```java
 package org.cryptoapi.bench.pbeiteration;
 
 import javax.crypto.spec.PBEParameterSpec;
@@ -13,7 +14,8 @@ public class LessThan1000IterationPBEBBCase1 {
         PBEParameterSpec pbeParamSpec = null;
         byte[] salt = new byte[32];
         random.nextBytes(salt);
-        int count = 20;
-        pbeParamSpec = new PBEParameterSpec(salt, count);
+        int iterationCount = 1000; // Recommended minimum value
+        pbeParamSpec = new PBEParameterSpec(salt, iterationCount);
     }
 }
+```
